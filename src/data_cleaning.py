@@ -15,10 +15,14 @@ def clean_column_names(df):
         df_clean.columns
         .str.strip()
         .str.lower()
-        .str.replace("  ","_")
+        .str.replace(" ","_")
     )
 
-    return df_clean()
+    text_cols = df_clean.select_dtypes(include="object").columns
+    for col in text_cols:
+        df_clean[col] = df_clean[col].str.strip()
+
+    return df_clean
 
 
 def handle_missing_values(df):
