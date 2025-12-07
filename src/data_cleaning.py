@@ -1,4 +1,4 @@
-#Importing libraries
+#Importing pandas libraries
 import pandas as pd
 
 #Loading the sales_data_raw.csv from data/raw/ using a function
@@ -7,17 +7,18 @@ def load_data(file_path):
     #Returns the read file as the data to the data frame
     return pd.read_csv(file_path)
 
-
+#Crate a function taht cleans the column names by standarizing the data through lower casing and replacing spaces with underscores
 def clean_column_names(df):
     df_clean = df.copy()
-
     df_clean.columns = (
         df_clean.columns
         .str.strip()
         .str.lower()
-        .str.replace(" ","_")
+        .str.replace("  ","_")
     )
+    return df_clean
 
+    #Removes the white spaces by stripping leading and trailing spaces from product names and categories
     text_cols = df_clean.select_dtypes(include="object").columns
     for col in text_cols:
         df_clean[col] = df_clean[col].str.strip()
@@ -25,6 +26,7 @@ def clean_column_names(df):
     return df_clean
 
 
+#Drop rows with missing values in price and quantity columns in order to handle missing values consistently
 def handle_missing_values(df):
     df_clean = df.copy()
 
